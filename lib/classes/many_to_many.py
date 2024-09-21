@@ -22,19 +22,21 @@ class NationalPark:
             raise TypeError ("Name must be a string with atleast 3 characters.")
         
     def trips(self):
-        pass
+        return [trip for trip in Trip._all if trip.national_park == self]
     
     def visitors(self):
-        pass
+        return list(set([trip.visitor for trip in self.trips()]))
     
     def total_visits(self):
-        pass
+        return len(self.trips())
     
     def best_visitor(self):
-        pass
+        Visitors = [trip.visitor for trip in self.trips()]
+        return max(set(visitors), key=visitors.count)
 
 
 class Trip:
+    _all = []
     
     def __init__(self, visitor, national_park, start_date, end_date):
         if isinstance(visitor, Visitor):
@@ -50,6 +52,7 @@ class Trip:
 
         self.start_date = start_date
         self.end_date = end_date
+        Trip._all.append(self)
     
     @property
     def start_date(self):
@@ -102,10 +105,10 @@ class Visitor:
             raise TypeError("name must be  a string in the range 1-15 characters") 
                
     def trips(self):
-        pass
+        return [trip for trip in Trip._all if trip.visitor  == self]
     
     def national_parks(self):
-        pass
+        return list(set([trip.national_park for trip in self.trips()]))
     
     def total_visits_at_park(self, park):
-        pass
+        return len([trip for trip in self.trips() if trip.national_park == park])
